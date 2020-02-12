@@ -1,10 +1,12 @@
 from modulotabs import *
 from coloreshell import *
+
 class board:
     def __init__(self):
 
         self.matrice = []
-        self.turn = "n"
+        self.turn = ""
+
     def makematriz(self):
         for ypos in range(0,9):
             self.matrice.append([])
@@ -41,5 +43,39 @@ class board:
             indicator = 1 if  (indicator == 0) else 0
         return tabla
             
-    def position(self):
-        pass
+    def position(self, matrice):
+        allPos = { "n": [], "b":[],"N":[],"B":[] }
+        for element in matrice:
+            for ovject in element:
+                if ovject != []:
+                    if  ovject.symbol == "n":
+                        allPos["n"].append(ovject)
+                    elif  ovject.symbol == "b":
+                        allPos["b"].append(ovject)
+                    elif  ovject.symbol == "N":
+                        allPos["N"].append(ovject)
+                    elif  ovject.symbol == "B":
+                        allPos["B"].append(ovject)
+        return allPos
+
+    def translate(self,string):
+        string = string.lower()
+        listing = {
+             "a":1,
+             "b":2,
+             "c":3,
+             "d":4,
+             "e":5,
+             "f":6,
+             "g":7,
+             "h":8
+        }
+        return listing[string]
+
+
+
+
+
+
+
+
