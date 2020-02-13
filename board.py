@@ -7,6 +7,8 @@ class board:
 
         self.matrice = []
         self.turn = ""
+        self.pteam1 = 0
+        self.pteam2 = 0
 
     def makematriz(self):
         for ypos in range(0,9):

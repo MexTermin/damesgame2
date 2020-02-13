@@ -16,29 +16,47 @@ def start():
         if select[0].lower() == "n":
             tablet.turn = "n"
 
-        elif select[1].lower()  == "b":
+        elif select[0].lower()  == "b":
             tablet.turn = "b"
         else:
             input("type a correctly team ")
             start()
-    #---------------------Make the view to the tablet ----------------------------
+    #----------------------Make the view to the tablet -----------------------------
     system("cls")
-    print("is turn of the team ",tablet.turn)
+    if tablet.turn == "n":
+        poin = tablet.pteam1
+    else:
+        poin = tablet.pteam2
+    print("is turn of the team ",tablet.turn, "you have {} points".format(poin))
     print(tablet.view())
-    #----------------------------------------------------------------------------
+    #-------------------------------------------------------------------------------
     searching = ["n","N"] if  (tablet.turn == "n") else ["b","B"]
     pos = tablet.position(tablet.matrice)
     targets = []
+    #-------------------------------------------------make dame-----------------------------------------------
+    for element in range(1,9,7 ):
+        for tabs in range(1,9):
+            if element == 1:
+                if tablet.matrice[element][tabs] != []:
+                    if tablet.matrice[element][tabs].symbol == "n": 
+                        tablet.matrice[element][tabs].symbol = "N"
+            if element == 8:
+                if tablet.matrice[element][tabs] != []:
+                    if tablet.matrice[element][tabs].symbol == "b": 
+                        tablet.matrice[element][tabs].symbol = "B"
 
+    #-------------------------------------------------------------------Multi-eat------------------------------------------------
     for element in searching:
         for tabs in pos[element]:
             if len(tabs.target(tablet.matrice,tablet.turn) ) > 0: 
                 targets.append(tabs.target(tablet.matrice,tablet.turn) )
-  
-    #-------------------------------------------------------------------Multi-eat--------------------------------------------------------------------
     if len(targets) == 1:
         input("you should eat whit the tab, "+ str(targets[0]))
-        tablet.matrice,tablet.turn = tablet.matrice[targets[0][0][0]] [targets[0][0][1]].eat(targets[0][1],tablet.matrice)
+        tablet.matrice,tablet.turn,poin = tablet.matrice[targets[0][0][0]] [targets[0][0][1]].eat(targets[0][1],tablet.matrice,poin)
+        if tablet.turn == "n":
+            tablet.pteam2 = poin
+        else:
+            tablet.pteam1 = poin
         start()
     elif len(targets) > 1:
         print("the targest are")
@@ -52,11 +70,16 @@ def start():
         except :
             input( "You should type a number between ", len(targets) )
             start()
-        tablet.matrice,tablet.turn = tablet.matrice[targets[answer][0][0] ] [ targets[answer][0][1] ].eat(targets[answer][1],tablet.matrice)
-        start()
-    # ------------------------------------------------------------------------------------------------------------------------------------------------
-    types = input("type de tab and its directions,  '3A R' ").split(" ")
+        tablet.matrice,tablet.turn,poin= tablet.matrice[targets[answer][0][0] ] [ targets[answer][0][1] ].eat(targets[answer][1],tablet.matrice,poin)
+        if tablet.turn == "n":
+            tablet.pteam2 = poin
+        else:
+            tablet.pteam1 = poin
 
+        start()
+    # ------------------------------------------------------------------make the move--------------------------------------------
+    
+    types = input("type de tab and its directions, example '3A R' ").split(" ")
 
     try:
         #--------------------------------------Controller the steps----------------------------------------
@@ -68,6 +91,7 @@ def start():
                 start()
         tablet.turn = tablet.matrice[tab[0]][tab[1]].move(direction,tablet.turn,tablet.matrice)
         #---------------------------------------Controller the exceptions-----------------------------------
+
     except invalidmove as e:
         system("cls")
         input(str(e))
@@ -79,16 +103,6 @@ def start():
     except:
         system("cls")
         input("type a correctly tab")
-    #-------------------------------------------------make dame-----------------------------------------------
-    for element in range(1,9,7 ):
-        for tabs in range(1,9):
-            if element == 1:
-                if tablet.matrice[element][tabs] != []:
-                    if (tablet.matrice[element][tabs].symbol == "n"): tablet.matrice[element][tabs].symbol = "N" 
-            if element == 8:
-                if tablet.matrice[element][tabs] != []:
-                    if (tablet.matrice[element][tabs].symbol == "b"): tablet.matrice[element][tabs].symbol = "B"
-    #---------------------------------------------------------------------------------------------------------
 
     start()
 
