@@ -6,7 +6,7 @@ class board:
     def __init__(self):
 
         self.matrice = []
-        self.turn = ""
+        self.turn = "n"
         self.pteam1 = 0
         self.pteam2 = 0
 
@@ -41,6 +41,9 @@ class board:
             for i in range(1,9):
                 c = Colour.BLACK if (colour ==0) else Colour.WHITE1
                 pos =   "   "  if (self.matrice[vertical][i] == [])  else " "   +   str(self.matrice[vertical][i].symbol)  +   " "
+                if self.matrice[vertical][i] != []:
+                    if self.matrice[vertical][i].symbol.upper() == "N" :
+                        c = Colour.WHITE3
                 tabla += c +  pos +  Colour.END
                 colour = 1  if (colour == 0) else  0 
             indicator = 1 if  (indicator == 0) else 0
@@ -75,5 +78,15 @@ class board:
         }
         return listing[string]
 
-    
+    def makedame(self):
+        for element in range(1,9,7 ):
+            for tabs in range(1,9):
+                if element == 1:
+                    if self.matrice[element][tabs] != []:
+                        if self.matrice[element][tabs].symbol == "n": 
+                            self.matrice[element][tabs].symbol = "N"
+                if element == 8:
+                    if self.matrice[element][tabs] != []:
+                        if self.matrice[element][tabs].symbol == "b": 
+                            self.matrice[element][tabs].symbol = "B"
 

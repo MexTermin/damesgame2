@@ -1,3 +1,4 @@
+
 class Colour:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'
@@ -9,8 +10,9 @@ class Colour:
    BOLD = '\033[1m'
    UNDERLINE = '\033[4m'
    END = '\033[0m' 
-   BLACK = '\033[1;40m'
-   WHITE1 = '\033[1;31;47m'
-   WHITE2 = '\033[1;34;47m'
+   BLACK = '\033[1;44m'
+   WHITE1 = '\033[1;30;47m'
+   WHITE2 = '\033[1;30;47m'
    WHITEEMPTY ='\033[1;47m'
+   WHITE3 = '\033[1;31;47m'
 # print(Colour.black +"   " + Colour.END+Colour.white +"  " + Colour.END)
