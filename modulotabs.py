@@ -2,13 +2,10 @@ from exceptions import *
 
 class tab:
 
-
     def __init__(self):
         self.pos    = []
         self.dame   = False
         self.symbol = ""
-        if self.dame == True:
-            self.symbol = self.symbol.upper()
 
     def counter(self,player):
 
@@ -68,7 +65,8 @@ class tab:
         return self.counter(turn)
 
     def target(self,matrice,player):
-        targets = []
+
+        targets = ()
 
         if matrice[self.pos[0]] [self.pos[1]] != []:
 
@@ -77,32 +75,34 @@ class tab:
                 if  matrice[self.pos[0]+1] [self.pos[1]+1] != []:
                     if matrice[self.pos[0]+1][self.pos[1]+1].symbol == self.counter(player):
                         if  matrice[self.pos[0]+2][self.pos[1]+2] == []:
-                            targets.append( (self.pos,"RD") )
+                            targets = (self.pos,"RD") 
 
             if  self.pos[0] >2  and self.pos[1] < 7 :
             #----------------------------------------------------------------------------------------------------------------                
                 if matrice[self.pos[0]-1][self.pos[1]+1] != []:
                     if matrice[self.pos[0]-1][self.pos[1]+1].symbol == self.counter(player):
                         if  matrice[self.pos[0]-2][self.pos[1]+2]  == []:
-                            targets.append( (self.pos,"RU") )
+                            targets = (self.pos,"RU") 
 
             if self.pos[0] > 2 and self.pos[1] > 2 :
             #----------------------------------------------------------------------------------------------------------------                
                 if matrice[self.pos[0]-1][self.pos[1]-1] != []:
                     if matrice[self.pos[0]-1][self.pos[1]-1].symbol == self.counter(player):
                         if  matrice[self.pos[0]-2][self.pos[1]-2]  == []:
-                            targets.append( (self.pos,"LU") )
+                            targets = (self.pos,"LU") 
 
             if self.pos[0] < 7 and self.pos[1] > 2 :
             #----------------------------------------------------------------------------------------------------------------                
                 if matrice[self.pos[0]+1][self.pos[1]-1] != []:
                     if matrice[self.pos[0]+1][self.pos[1]-1].symbol == self.counter(player ):
                         if matrice[self.pos[0]+2][self.pos[1]-2]  == []:
-                            targets.append( (self.pos,"LD") )
+                            targets = (self.pos,"LD") 
      
         return targets
 
     def eat(self,direction,matrice):
+        #----------------------------------Refactorizar----------------------------------
+        #--------------------------------------------------------------------------------
         if direction.upper() == "RU":
             matrice[self.pos[0]-2] [self.pos[1]+2] = matrice[self.pos[0]] [self.pos[1]]
             matrice[self.pos[0]] [self.pos[1]] = []
@@ -129,13 +129,18 @@ class tab:
             matrice[self.pos[0]+2] [self.pos[1]-2] = matrice[self.pos[0]] [self.pos[1]]
             matrice[self.pos[0]] [self.pos[1]] = []
             matrice[self.pos[0]+1] [self.pos[1]-1] = []
-            self.pos[0] = self.pos[0] - 2
-            self.pos[1] = self.pos[1] + 2
+            self.pos[0] = self.pos[0] + 2
+            self.pos[1] = self.pos[1] - 2
 
         targt = self.target(matrice,self.symbol)
         if len(targt)>0:
+
             for element in targt:
-                if element[0][0] == self.pos[0] and  element[0][1] == self.pos[1] :
-                    return  self.eat(element[1],matrice)
+                if element[0] == self.pos[0] and  element[1] == self.pos[1] :
+                    return  self.eat(targt[1],matrice)
         else:
             return matrice,self.counter(self.symbol)
+    
+    def makedame(self):
+        self.symbol = self.symbol.upper()
+        self.dame = True

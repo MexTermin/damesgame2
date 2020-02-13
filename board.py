@@ -2,6 +2,7 @@ from modulotabs import *
 from coloreshell import *
 
 class board:
+
     def __init__(self):
 
         self.matrice = []
@@ -72,10 +73,5 @@ class board:
         }
         return listing[string]
 
-
-
-
-
-
-
+    
 
