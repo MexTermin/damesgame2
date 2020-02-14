@@ -17,7 +17,7 @@ def start():
         system("cls")
         input("Congratulation player *N* you have won the  game")
         return
-
+ 
     system("cls")
     #----------------------doing the selection to begginig game---------------------
     # if tablet.turn == "":
