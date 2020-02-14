@@ -11,12 +11,14 @@ class board:
         self.pteam2 = 0
 
     def makematriz(self):
+        # this method make the principal matrice
         for ypos in range(0,9):
             self.matrice.append([])
             for xpos in range (0,9):
                 self.matrice[ypos].append([])
 
     def teamsGenerate(self,simbol,start,row):
+        #this class can generate in any row
         start = start
         for ypos in range(row,row+3):
             for xpos in range(1,9,2):
@@ -31,6 +33,7 @@ class board:
             start = 1 if (start == 2) else 2
 
     def view(self):
+        #--------------------------------this method render de principal view of the program--------------------
         indicator = 0
         colour = 0
         pos = ""
@@ -50,6 +53,7 @@ class board:
         return tabla
             
     def position(self, matrice):
+        # save all position for any tabs
         allPos = { "n": [], "b":[],"N":[],"B":[] }
         for element in matrice:
             for ovject in element:
@@ -65,6 +69,7 @@ class board:
         return allPos
 
     def translate(self,string):
+        # this method translate the input
         string = string.lower()
         listing = {
              "a":1,
@@ -79,6 +84,7 @@ class board:
         return listing[string]
 
     def makedame(self):
+        # this method verify is there's any new dame in the tablet
         for element in range(1,9,7 ):
             for tabs in range(1,9):
                 if element == 1:

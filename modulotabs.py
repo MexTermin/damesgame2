@@ -7,7 +7,7 @@ class tab:
         self.symbol = ""
 
     def counter(self,player):
-
+        # return the counter to the players or tabs
         if player.lower() == "b":
             return "n"
         elif player.lower()== "n":
@@ -63,7 +63,7 @@ class tab:
         #-----------------------------------------------------------------------------------------------
     
     def target(self,matrice,player):
-
+        # save oll target that can have the tabs
         targets = ()
 
         if matrice[self.pos[0]] [self.pos[1]] != []:
@@ -103,6 +103,7 @@ class tab:
         return targets
 
     def eat(self,direction,matrice,point): 
+        #----------------Validating the eat-----------------
         if direction.upper() == "RU" :
             if (self.symbol == "n" or self.symbol == self.symbol.upper()):
                 y1,x1,y2,x2 = -1,1,-2,2
@@ -119,7 +120,7 @@ class tab:
         if direction.upper() == "LD" :
             if (self.symbol == "b" or self.symbol == self.symbol.upper()):
                 y1,x1,y2,x2 = 1,-1,2,-2
-        
+        #---------------- Make the eat----------------
         matrice[self.pos[0]+y2] [self.pos[1]+x2] = matrice[self.pos[0]] [self.pos[1]]
         matrice[self.pos[0]] [self.pos[1]] = []
         matrice[self.pos[0]+y1] [self.pos[1]+x1] = []

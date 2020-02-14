@@ -1,4 +1,4 @@
-
+#this class doing the colors for the view
 class Colour:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'
