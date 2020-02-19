@@ -81,15 +81,13 @@ class board:
                         if self.matrice[element][tabs].symbol == "b": 
                             self.matrice[element][tabs].symbol = "B"
     
-    @staticmethod
-    def clearWindows():
+    def clearWindows(self):
         if os.name == "posix":
             os.system ("clear")
         elif os.name == "ce" or os.name == "nt" or os.name == "dos":
             os.system ("cls")
     
-    @staticmethod
-    def translate(string):
+    def translate(self,string):
         # this method translate the input
         if not isinstance(string,int):
             string = string.lower()

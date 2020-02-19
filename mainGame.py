@@ -5,7 +5,7 @@ from exceptions import *
 tablet = board()
 tablet.makematriz()
 tablet.teamsGenerate("b",1,1)
-tablet.teamsGenerate("n",2,6)
+tablet.teamsGenerate("N",2,6)
 
 def start():
     tablet.clearWindows()
@@ -97,6 +97,9 @@ def start():
     except invalidtab as e:
         tablet.clearWindows()
         input(str(e))
+    except invalidrange as e:
+        tablet.clearWindows()
+        input(str(e))    
     except:
         tablet.clearWindows()
         input("Type a correctly tab")

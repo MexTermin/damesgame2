@@ -15,65 +15,157 @@ class tab:
         else:
             return False
     
-    def mRightUp(self,matrice):
-        if matrice[self.pos[0]-1][self.pos[1]+1] == [] and self.pos[0] >1 and self.pos[1]<8: 
-            return -1,1
-        else:
-            raise invalidmove("you cant move here")
+    def dameValidation(self,matrice,y,x,step):
+        by = y
+        bx = x
+        for i in range(1,step+1):
+            y*=i
+            x*=i
+            if matrice[self.pos[0]+y][self.pos[1]+x] !=[]:
+                return False
+            y=by
+            x=bx
 
-    def mLeftUp(self,matrice):
-        if matrice[self.pos[0]-1][self.pos[1]-1] == []  and self.pos[0] >1 and self.pos[1]>1:
-           
-            return -1,-1
+        return True
+
+    def mRightUp(self,matrice,step):
+        x,y = step,step
+        if step==1:
+            if matrice[self.pos[0]-y][self.pos[1]+x] == [] and self.pos[0] >1 and self.pos[1]<8: 
+                matrice[self.pos[0]-y][self.pos[1]+x] =  matrice[self.pos[0]][self.pos[1]]
+            else:
+                raise invalidmove("you cant move here")
         else:
-            raise invalidmove("you cant move here")
-        
-    def mLeftDown(self,matrice):
-        if matrice[self.pos[0]+1][self.pos[1]-1] == []  and self.pos[0] <8 and self.pos[1]>1:
+            if self.dameValidation(matrice,-1,1,step):
+                matrice[self.pos[0]-y][self.pos[1]+x] =  matrice[self.pos[0]][self.pos[1]]
+            else:
+                raise invalidmove("you cant move here")
+        matrice[self.pos[0]][self.pos[1]] = []
+        self.pos[0] = self.pos[0] - y
+        self.pos[1] = self.pos[1] + x 
+
+    def mLeftUp(self,matrice,step):
+        # x,y = step, step
+        # if matrice[self.pos[0]-y][self.pos[1]-x] == []  and self.pos[0] >1 and self.pos[1]>1:
            
-            return  1,-1
+        #     return -y,-x
+        # else:
+        #     raise invalidmove("you cant move here")
+        x,y = step,step
+        if step == 1:
+            if matrice[self.pos[0]-y][self.pos[1]-x] == [] and self.pos[0] >1 and self.pos[1]>1: 
+                matrice[self.pos[0]-y][self.pos[1]-x] =  matrice[self.pos[0]][self.pos[1]]
+            else:
+                raise invalidmove("you cant move here")
         else:
-            raise invalidmove("you cant move here")
-        
-    def mRightDown(self,matrice):
-        if matrice[self.pos[0]+1][self.pos[1]+1] == []  and self.pos[0] <8 and self.pos[1]<8:
+            if self.dameValidation(matrice,-1,-1,step):
+                matrice[self.pos[0]-y][self.pos[1]-x] =  matrice[self.pos[0]][self.pos[1]]
+            else:
+                raise invalidmove("you cant move here")
+        matrice[self.pos[0]][self.pos[1]] = []
+        self.pos[0] = self.pos[0] - y
+        self.pos[1] = self.pos[1] - x 
+   
+    def mLeftDown(self,matrice,step):
+        # x,y = step,step
+        # if matrice[self.pos[0]+y][self.pos[1]-x] == []  and self.pos[0] <8 and self.pos[1]>1:
+           
+        #     return  y,-x
+        # else:
+        #     raise invalidmove("you cant move here")
+        x,y = step,step
+        if step==1:
+            if matrice[self.pos[0]+y][self.pos[1]-x] == [] and self.pos[0] <8 and self.pos[1]>1: 
+                matrice[self.pos[0]+y][self.pos[1]-x] =  matrice[self.pos[0]][self.pos[1]]
+            else:
+                raise invalidmove("you cant move here")
+        else:
+            if self.dameValidation(matrice,1,-1,step):
+                matrice[self.pos[0]+y][self.pos[1]-x] =  matrice[self.pos[0]][self.pos[1]]
+            else:
+                raise invalidmove("you cant move here")
+        matrice[self.pos[0]][self.pos[1]] = []
+        self.pos[0] = self.pos[0] + y
+        self.pos[1] = self.pos[1] - x 
+
+    def mRightDown(self,matrice,step):
+        # x,y = step,step
+        # if matrice[self.pos[0]+x][self.pos[1]+y] == []  and self.pos[0] <8 and self.pos[1]<8:
             
-            return  1,1
+        #     return  y,x
+        # else:
+        #     raise invalidmove("you cant move here")
+        x,y = step,step
+        if step==1:
+            if matrice[self.pos[0]+y][self.pos[1]+x] == [] and self.pos[0] <8 and self.pos[1]<8: 
+                matrice[self.pos[0]+y][self.pos[1]+x] =  matrice[self.pos[0]][self.pos[1]]
+            else:
+                raise invalidmove("you cant move here")
         else:
-            raise invalidmove("you cant move here")
+            if self.dameValidation(matrice,1,1,step):
+                matrice[self.pos[0]+y][self.pos[1]+x] =  matrice[self.pos[0]][self.pos[1]]
+            else:
+                raise invalidmove("you cant move here")
+        matrice[self.pos[0]][self.pos[1]] = []
+        self.pos[0] = self.pos[0] + y
+        self.pos[1] = self.pos[1] + x 
 
     def move(self,direction,turn,matrice):
-         #-----------------------------------------------------------------------------------------------
+        #-----------------------------------------------------------------------------------------------
         if direction.upper()  == "RU":
-            if (turn == "n" and self.symbol =="n") or ( self.symbol == self.symbol.upper() and self.symbol == turn.upper() ):
-                y1,x1 = self.mRightUp(matrice)
+            if (turn == "n" and self.symbol =="n") :
+                self.mRightUp(matrice,1)
+                return self.counter(turn)
+
+            elif self.symbol == self.symbol.upper():
+                try:
+                    answer = int(input("please enter the box number to be moved: "))
+                    if answer < 1 or answer >8:
+                        raise invalidrange("please write a number in the range from 1 to 8")
+                except:
+                    raise invalidrange("please write a number in the range from 1 to 8")
+
+                self.mRightUp(matrice,answer)
+                return self.counter(turn)
             else:
                 raise invalidmove("you can't move this tab")
         #-----------------------------------------------------------------------------------------------
         if direction.upper()  == "LU":
-            if (turn == "n" and self.symbol =="n" ) or ( self.symbol == self.symbol.upper() and self.symbol == turn.upper() ):
-                y1,x1  = self.mLeftUp(matrice)
+            if (turn == "n" and self.symbol =="n") :
+                self.mLeftUp(matrice,1)
+                return self.counter(turn)
+
+            elif self.symbol == self.symbol.upper():
+                answer = int(input("please enter the box number to be moved: "))
+                self.mLeftUp(matrice,answer)
+                return self.counter(turn)
             else:
                 raise invalidmove("you can't move this tab")
         #-----------------------------------------------------------------------------------------------
         if direction.upper()  == "LD":
-            if (turn == "b" and self.symbol =="b") or ( self.symbol == self.symbol.upper() and self.symbol == turn.upper() ) :
-                y1,x1  = self.mLeftDown(matrice)
+            if (turn == "b" and self.symbol =="b") :
+                self.mLeftDown(matrice,1)
+                return self.counter(turn)
+
+            elif self.symbol == self.symbol.upper():
+                answer = int(input("please enter the box number to be moved: "))
+                self.mLeftDown(matrice,answer)
+                return self.counter(turn)
             else:
-                raise invalidmove("you can't move this tab")         
+                raise invalidmove("you can't move this tab")     
         #-----------------------------------------------------------------------------------------------
         if direction.upper()  == "RD":
-            if (turn == "b" and self.symbol =="b") or ( self.symbol == self.symbol.upper() and self.symbol == turn.upper() ) :
-               y1,x1  = self.mRightDown(matrice)
-        #-----------------------------------------------------------------------------------------------                
+            if (turn == "b" and self.symbol =="b") :
+                self.mRightDown(matrice,1)
+                return self.counter(turn)
+
+            elif self.symbol == self.symbol.upper():
+                answer = int(input("please enter the box number to be moved: "))
+                self.mRightDown(matrice,answer)
+                return self.counter(turn)
             else:
                 raise invalidmove("you can't move this tab")
 
-        matrice[self.pos[0]+y1][self.pos[1]+x1] =  matrice[self.pos[0]][self.pos[1]]
-        matrice[self.pos[0]][self.pos[1]] = []
-        self.pos[0] = self.pos[0] + y1
-        self.pos[1] = self.pos[1] + x1  
-        return self.counter(turn)
         #-----------------------------------------------------------------------------------------------
     
     def target(self,matrice,player):
