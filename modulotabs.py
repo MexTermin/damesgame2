@@ -14,46 +14,60 @@ class tab:
             return "b"
         else:
             return False
+    
+    def mRightUp(self,matrice):
+        if matrice[self.pos[0]-1][self.pos[1]+1] == [] and self.pos[0] >1 and self.pos[1]<8: 
+            return -1,1
+        else:
+            raise invalidmove("you cant move here")
+
+    def mLeftUp(self,matrice):
+        if matrice[self.pos[0]-1][self.pos[1]-1] == []  and self.pos[0] >1 and self.pos[1]>1:
+           
+            return -1,-1
+        else:
+            raise invalidmove("you cant move here")
+        
+    def mLeftDown(self,matrice):
+        if matrice[self.pos[0]+1][self.pos[1]-1] == []  and self.pos[0] <8 and self.pos[1]>1:
+           
+            return  1,-1
+        else:
+            raise invalidmove("you cant move here")
+        
+    def mRightDown(self,matrice):
+        if matrice[self.pos[0]+1][self.pos[1]+1] == []  and self.pos[0] <8 and self.pos[1]<8:
+            
+            return  1,1
+        else:
+            raise invalidmove("you cant move here")
 
     def move(self,direction,turn,matrice):
          #-----------------------------------------------------------------------------------------------
         if direction.upper()  == "RU":
             if (turn == "n" and self.symbol =="n") or ( self.symbol == self.symbol.upper() and self.symbol == turn.upper() ):
-                if matrice[self.pos[0]-1][self.pos[1]+1] == [] and self.pos[0] >1 and self.pos[1]<8:
-                    y1,x1 = -1,1
-                else:
-                    raise invalidmove("you cant move here")
+                y1,x1 = self.mRightUp(matrice)
             else:
                 raise invalidmove("you can't move this tab")
         #-----------------------------------------------------------------------------------------------
         if direction.upper()  == "LU":
             if (turn == "n" and self.symbol =="n" ) or ( self.symbol == self.symbol.upper() and self.symbol == turn.upper() ):
-                if matrice[self.pos[0]-1][self.pos[1]-1] == []  and self.pos[0] >1 and self.pos[1]>1:
-                    y1,x1 = -1,-1
-                else:
-                    raise invalidmove("you cant move here")
+                y1,x1  = self.mLeftUp(matrice)
             else:
-                raise invalidmove("you can't vome this tab")
+                raise invalidmove("you can't move this tab")
         #-----------------------------------------------------------------------------------------------
         if direction.upper()  == "LD":
             if (turn == "b" and self.symbol =="b") or ( self.symbol == self.symbol.upper() and self.symbol == turn.upper() ) :
-                if matrice[self.pos[0]+1][self.pos[1]-1] == []  and self.pos[0] <8 and self.pos[1]>1:
-                    y1,x1 = 1,-1
-                else:
-                    raise invalidmove("you cant move here")
+                y1,x1  = self.mLeftDown(matrice)
             else:
-                raise invalidmove("you can't vome this tab")         
+                raise invalidmove("you can't move this tab")         
         #-----------------------------------------------------------------------------------------------
         if direction.upper()  == "RD":
             if (turn == "b" and self.symbol =="b") or ( self.symbol == self.symbol.upper() and self.symbol == turn.upper() ) :
-                if matrice[self.pos[0]+1][self.pos[1]+1] == []  and self.pos[0] <8 and self.pos[1]<8:
-                    x1,y1 = 1,1
-
-                else:
-                    raise invalidmove("you cant move here")
+               y1,x1  = self.mRightDown(matrice)
         #-----------------------------------------------------------------------------------------------                
             else:
-                raise invalidmove("you can't vome this tab")
+                raise invalidmove("you can't move this tab")
 
         matrice[self.pos[0]+y1][self.pos[1]+x1] =  matrice[self.pos[0]][self.pos[1]]
         matrice[self.pos[0]][self.pos[1]] = []
@@ -71,55 +85,47 @@ class tab:
             if  self.pos[0] < 7 and self.pos[1] < 7:
             #----------------------------------------------------------------------------------------------------------------
                 if  matrice[self.pos[0]+1] [self.pos[1]+1] != []:
-                    if self.symbol == "b" or self.symbol == self.symbol.upper():
-                        if matrice[self.pos[0]+1][self.pos[1]+1].symbol.lower() == self.counter(player):
-                            if  matrice[self.pos[0]+2][self.pos[1]+2] == []:
-                                targets = (self.pos,"RD") 
+                    if matrice[self.pos[0]+1][self.pos[1]+1].symbol.lower() == self.counter(player):
+                        if  matrice[self.pos[0]+2][self.pos[1]+2] == []:
+                            targets = (self.pos,"RD") 
 
             if  self.pos[0] >2  and self.pos[1] < 7 :
             #----------------------------------------------------------------------------------------------------------------                
                 if matrice[self.pos[0]-1][self.pos[1]+1] != []:
-                    if self.symbol == "n" or self.symbol == self.symbol.upper():
-                        if matrice[self.pos[0]-1][self.pos[1]+1].symbol.lower()  == self.counter(player):
-                            if  matrice[self.pos[0]-2][self.pos[1]+2]  == []:
-                                targets = (self.pos,"RU") 
+                    if matrice[self.pos[0]-1][self.pos[1]+1].symbol.lower()  == self.counter(player):
+                        if  matrice[self.pos[0]-2][self.pos[1]+2]  == []:
+                            targets = (self.pos,"RU") 
 
             if self.pos[0] > 2 and self.pos[1] > 2 :
             #----------------------------------------------------------------------------------------------------------------                
                 if matrice[self.pos[0]-1][self.pos[1]-1] != []:
-                    if self.symbol == "n" or self.symbol == self.symbol.upper():
-                        if matrice[self.pos[0]-1][self.pos[1]-1].symbol.lower()  == self.counter(player):
-                            if  matrice[self.pos[0]-2][self.pos[1]-2]  == []:
-                                targets = (self.pos,"LU") 
+                    if matrice[self.pos[0]-1][self.pos[1]-1].symbol.lower()  == self.counter(player):
+                        if  matrice[self.pos[0]-2][self.pos[1]-2]  == []:
+                            targets = (self.pos,"LU") 
 
             if self.pos[0] < 7 and self.pos[1] > 2 :
             #----------------------------------------------------------------------------------------------------------------                
-                if matrice[self.pos[0]+1][self.pos[1]-1] != []:
-                    if self.symbol == "b" or self.symbol == self.symbol.upper():
-                        if matrice[self.pos[0]+1][self.pos[1]-1].symbol.lower()  == self.counter(player ):
-                            if matrice[self.pos[0]+2][self.pos[1]-2]  == []:
-                                targets = (self.pos,"LD") 
+                if matrice[self.pos[0]+1][self.pos[1]-1] != []: 
+                    if matrice[self.pos[0]+1][self.pos[1]-1].symbol.lower()  == self.counter(player ):
+                        if matrice[self.pos[0]+2][self.pos[1]-2]  == []:
+                            targets = (self.pos,"LD") 
      
         return targets
 
     def eat(self,direction,matrice,point): 
         #----------------Validating the eat-----------------
         if direction.upper() == "RU" :
-            if (self.symbol == "n" or self.symbol == self.symbol.upper()):
-                y1,x1,y2,x2 = -1,1,-2,2
+            y1,x1,y2,x2 = -1,1,-2,2
 
         if direction.upper() == "LU" :
-            if   (self.symbol == "n" or self.symbol == self.symbol.upper()) :
-                y1,x1,y2,x2 = -1,-1,-2,-2
+            y1,x1,y2,x2 = -1,-1,-2,-2
 
 
         if direction.upper() == "RD" :
-            if  (self.symbol == "b" or self.symbol == self.symbol.upper()):
-                y1,x1,y2,x2 = 1,1,2,2
+            y1,x1,y2,x2 = 1,1,2,2
             
         if direction.upper() == "LD" :
-            if (self.symbol == "b" or self.symbol == self.symbol.upper()):
-                y1,x1,y2,x2 = 1,-1,2,-2
+            y1,x1,y2,x2 = 1,-1,2,-2
         #---------------- Make the eat----------------
         matrice[self.pos[0]+y2] [self.pos[1]+x2] = matrice[self.pos[0]] [self.pos[1]]
         matrice[self.pos[0]] [self.pos[1]] = []

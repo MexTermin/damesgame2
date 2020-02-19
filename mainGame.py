@@ -1,6 +1,5 @@
 from board import *
 from modulotabs import *
-from os import system
 from exceptions import *
 
 tablet = board()
@@ -9,13 +8,13 @@ tablet.teamsGenerate("b",1,1)
 tablet.teamsGenerate("n",2,6)
 
 def start():
-    system("cls")
+    tablet.clearWindows()
     if len(tablet.position(tablet.matrice)["n"]) == 0 and len(tablet.position(tablet.matrice)["N"])  == 0:
-        system("cls")
+        tablet.clearWindows()
         input("Congratulation player *B* you have won the  game")
         return
     if len(tablet.position(tablet.matrice)["b"]) == 0 and len(tablet.position(tablet.matrice)["B"])  == 0:
-        system("cls")
+        tablet.clearWindows()
         input("Congratulation player *N* you have won the  game")
         return
     #----------------------doing the selection to begginig game---------------------
@@ -42,7 +41,6 @@ def start():
     targets = []
     #-------------------------------------------------make dame-----------------------------------------------
     tablet.makedame()
-
     #------------------------------------------------Multi-target------------------------------------------------
     for element in searching:
         for tabs in pos[element]:
@@ -60,10 +58,12 @@ def start():
         start()
     #---------------------------------------------------------MultiEat---------------------------------------------------------------------
     elif len(targets) > 1:
-        print(targets)
         # -----------------------------------------------------Watching targets-------------------------------------------------------------------
         for i in range(len(targets)):
-            print("       ",i,"        ",end="")
+            view = targets[i]
+            view[0][1] = tablet.translate(view[0][1])
+            print("*"+str(i)+"*:"+str(view)+"  ",end="")
+            view[0][1] = tablet.translate(view[0][1])
 
         try:
             answer = int(input("  Select one target to eat:  "))
@@ -78,29 +78,27 @@ def start():
             tablet.pteam1 = poin
         start()
     # ------------------------------------------make the move--------------------------------------------------------------------------
-    
     types = input("Type de tab and its directions, example '3A RU' ").split(" ")
-
     try:
         #----------------------------------Controller the steps------------------------------------
         tab = (int(types[0][0]),int( tablet.translate(types[0][1])) )
         direction =  str(types[1])
         if direction.upper() != "RD" and direction.upper() != "LD":
             if direction.upper() != "LU" and direction.upper() != "RU":
-                system("cls")
+                tablet.clearWindows()
                 input("You should typing correctly direction")
                 start()
         tablet.turn = tablet.matrice[tab[0]][tab[1]].move(direction,tablet.turn,tablet.matrice)
         #------------------------------------Controller the exceptions-----------------------------
     except invalidmove as e:
-        system("cls")
+        tablet.clearWindows()
         input(str(e))
 
     except invalidtab as e:
-        system("cls")
+        tablet.clearWindows()
         input(str(e))
     except:
-        system("cls")
+        tablet.clearWindows()
         input("Type a correctly tab")
     #-------------- verify is there's a new dame---------
     tablet.makedame()
