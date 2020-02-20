@@ -46,10 +46,17 @@ def start():
         for tabs in pos[element]:
             if len(tabs.target(tablet.matrice,tablet.turn) ) > 0: 
                 targets.append(tabs.target(tablet.matrice,tablet.turn) )
+
     #----------------------------------------------Single eat(obligatory)-----------------------------------------------------------
     if len(targets) == 1:
+        print(targets[0])
         input("You should eat whit the tab, "+ str(targets[0]))
-        tablet.matrice,tablet.turn,poin = tablet.matrice[targets[0][0][0]] [targets[0][0][1]].eat(targets[0][1],tablet.matrice,poin)
+
+        if len(targets[0]) == 3:
+            tablet.matrice,tablet.turn,poin = tablet.matrice[targets[0][0][0]] [targets[0][0][1]].eat(targets[0][1],tablet.matrice,poin,targets[0][2])
+        else:
+             tablet.matrice,tablet.turn,poin = tablet.matrice[targets[0][0][0]] [targets[0][0][1]].eat(targets[0][1],tablet.matrice,poin)
+        
         if tablet.turn == "n":
             tablet.pteam2 = poin
         else:
@@ -58,7 +65,6 @@ def start():
         start()
     #---------------------------------------------------------MultiEat---------------------------------------------------------------------
     elif len(targets) > 1:
-        # -----------------------------------------------------Watching targets-------------------------------------------------------------------
         for i in range(len(targets)):
             view = targets[i]
             view[0][1] = tablet.translate(view[0][1])
@@ -77,6 +83,7 @@ def start():
         else:
             tablet.pteam1 = poin
         start()
+    
     # ------------------------------------------make the move--------------------------------------------------------------------------
     types = input("Type de tab and its directions, example '3A RU' ").split(" ")
     try:
@@ -105,6 +112,7 @@ def start():
         input("Type a correctly tab")
     #-------------- verify is there's a new dame---------
     tablet.makedame()
+
     start()
 
 start()

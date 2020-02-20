@@ -18,11 +18,12 @@ class tab:
     def dameValidation(self,matrice,y,x,step):
         by = y
         bx = x
-        for i in range(1,step+1):
+        for i in range(0,step):
             y*=i
             x*=i
-            if matrice[self.pos[0]+y][self.pos[1]+x] !=[]:
-                return False
+            if  self.pos[0] + y < 8 and self.pos[0] + y > 1 and  self.pos[1] + x < 8 and  self.pos[1] > 2:
+                if matrice[self.pos[0]+y][self.pos[1]+x] !=[]:
+                    return False
             y=by
             x=bx
 
@@ -173,20 +174,25 @@ class tab:
         targets = ()
 
         if matrice[self.pos[0]] [self.pos[1]] != []:
-
             if  self.pos[0] < 7 and self.pos[1] < 7:
             #----------------------------------------------------------------------------------------------------------------
                 if  matrice[self.pos[0]+1] [self.pos[1]+1] != []:
                     if matrice[self.pos[0]+1][self.pos[1]+1].symbol.lower() == self.counter(player):
                         if  matrice[self.pos[0]+2][self.pos[1]+2] == []:
                             targets = (self.pos,"RD") 
-
+                if len(self.targetDame(matrice,player,"RD") ) > 0 and self.symbol == self.symbol.upper():
+                    targets = self.targetDame(matrice,player,"RD")[0] 
+                    
             if  self.pos[0] >2  and self.pos[1] < 7 :
-            #----------------------------------------------------------------------------------------------------------------                
+            #----------------------------------------------------------------------------------------------------------------    
+                           
                 if matrice[self.pos[0]-1][self.pos[1]+1] != []:
                     if matrice[self.pos[0]-1][self.pos[1]+1].symbol.lower()  == self.counter(player):
                         if  matrice[self.pos[0]-2][self.pos[1]+2]  == []:
                             targets = (self.pos,"RU") 
+  
+                if len(self.targetDame(matrice,player,"RU") ) > 0 and self.symbol == self.symbol.upper():
+                    targets = self.targetDame(matrice,player,"RU")[0] 
 
             if self.pos[0] > 2 and self.pos[1] > 2 :
             #----------------------------------------------------------------------------------------------------------------                
@@ -194,30 +200,46 @@ class tab:
                     if matrice[self.pos[0]-1][self.pos[1]-1].symbol.lower()  == self.counter(player):
                         if  matrice[self.pos[0]-2][self.pos[1]-2]  == []:
                             targets = (self.pos,"LU") 
-
+                if len(self.targetDame(matrice,player,"LU") ) > 0 and self.symbol == self.symbol.upper():
+                    targets = self.targetDame(matrice,player,"LU")[0] 
             if self.pos[0] < 7 and self.pos[1] > 2 :
             #----------------------------------------------------------------------------------------------------------------                
                 if matrice[self.pos[0]+1][self.pos[1]-1] != []: 
                     if matrice[self.pos[0]+1][self.pos[1]-1].symbol.lower()  == self.counter(player ):
                         if matrice[self.pos[0]+2][self.pos[1]-2]  == []:
                             targets = (self.pos,"LD") 
-     
+                if len(self.targetDame(matrice,player,"LD") ) > 0 and self.symbol == self.symbol.upper():
+                    targets = self.targetDame(matrice,player,"LD")[0] 
         return targets
 
-    def eat(self,direction,matrice,point): 
+    def eat(self,direction,matrice,point,*args): 
         #----------------Validating the eat-----------------
+        
         if direction.upper() == "RU" :
-            y1,x1,y2,x2 = -1,1,-2,2
+            if len(args)==0:
+                y1,x1,y2,x2 = -1,1,-2,2
+            else:
+                y1,x1,y2,x2 = -args[0],args[0],-(args[0]+1),args[0]+1
+                
 
         if direction.upper() == "LU" :
-            y1,x1,y2,x2 = -1,-1,-2,-2
+            if len(args)==0:
+                y1,x1,y2,x2 = -1,-1,-2,-2
+            else:
+                y1,x1,y2,x2 =  -args[0],-args[0],-(args[0]+1),-(args[0]+1)
 
 
         if direction.upper() == "RD" :
-            y1,x1,y2,x2 = 1,1,2,2
+            if len(args)==0:
+                y1,x1,y2,x2 = 1,1,2,2
+            else:
+                y1,x1,y2,x2 =  args[0],args[0],(args[0]+1),args[0]+1
             
         if direction.upper() == "LD" :
-            y1,x1,y2,x2 = 1,-1,2,-2
+            if len(args)==0:
+                y1,x1,y2,x2 = 1,-1,2,-2
+            else:
+                y1,x1,y2,x2 = args[0],-(args[0]),args[0]+1,-(args[0]+1)
         #---------------- Make the eat----------------
         matrice[self.pos[0]+y2] [self.pos[1]+x2] = matrice[self.pos[0]] [self.pos[1]]
         matrice[self.pos[0]] [self.pos[1]] = []
@@ -233,3 +255,44 @@ class tab:
                     return  self.eat(targt[1],matrice,point)
         else:
             return matrice,self.counter(self.symbol),point
+
+    def targetDame(self,matrice,player,direction):
+        #input("\n la posicion es {} \n".format(self.pos))
+        target = []
+        posy, posx, posx2, posy2 = 0, 0, 0, 0
+        if matrice[self.pos[0]] [self.pos[1]].symbol ==  matrice[self.pos[0]][self.pos[1]].symbol.upper():
+            for y in range(1,7):
+                if direction.upper() == "RU":
+                    if self.pos[0] - y > 2 and self.pos[1] + y < 7:
+                        posy,   posx  = self.pos[0] - y,      self.pos[1] + y 
+                        posy2,  posx2 = self.pos[0] - y + 1,   self.pos[1] + y + 1 
+                 
+                elif direction.upper() == "LU":
+                    if self.pos[0] - y > 2 and self.pos[1] - y > 2:
+                        posy,   posx  = self.pos[0] - y,      self.pos[1] - y 
+                        posy2,  posx2 = self.pos[0] - y + 1,   self.pos[1] - y + 1 
+
+                elif direction.upper() == "RD":
+                    if self.pos[0] + y < 7 and self.pos[1] + y < 7:
+                        posy,   posx  = self.pos[0] + y,      self.pos[1] + y 
+                        posy2,  posx2 = self.pos[0] + y + 1,   self.pos[1] + y + 1 
+
+                elif direction.upper() == "LD":
+                    if self.pos[0] + y < 7 and self.pos[1] - y > 2:
+                        posy,   posx  = self.pos[0] - y,      self.pos[1] - y 
+                        posy2,  posx2 = self.pos[0] - y + 1,   self.pos[1] - y + 1 
+                                               
+                else:
+                    return []       
+                if matrice[posy][posx] != [] :
+                    if matrice[posy][posx].symbol.lower() == self.counter(player):
+                        if matrice[posy2][posx2] == [] :
+                            if self.dameValidation(matrice,self.pos[0],self.pos[1],y):
+                                target.append((self.pos,direction,y))
+                    else:
+                        return []
+        return target
+
+
+        
+

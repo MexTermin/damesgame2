@@ -6,7 +6,7 @@ class board:
     def __init__(self):
 
         self.matrice = []
-        self.turn = "n"
+        self.turn = "b"
         self.pteam1 = 0
         self.pteam2 = 0
 
