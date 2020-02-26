@@ -1,16 +1,16 @@
 from modulotabs import *
 from coloreshell import *
 import os
-class board:
+class Board:
 
     def __init__(self):
 
         self.matrice = []
-        self.turn = "b"
+        self.turn = "n"
         self.pteam1 = 0
         self.pteam2 = 0
 
-    def makematriz(self):
+    def makeMatriz(self):
         # this method make the principal matrice
         for ypos in range(0,9):
             self.matrice.append([])
@@ -22,7 +22,7 @@ class board:
         start = start
         for ypos in range(row,row+3):
             for xpos in range(1,9,2):
-                f = tab()
+                f = Tab()
                 f.symbol = simbol
                 if start == 2:
                     f.pos =[ypos,xpos+1]
@@ -68,7 +68,7 @@ class board:
                         allPos["B"].append(ovject)
         return allPos
     
-    def makedame(self):
+    def makeDame(self):
         # this method verify is there's any new dame in the tablet
         for element in range(1,9,7 ):
             for tabs in range(1,9):
