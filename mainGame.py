@@ -1,7 +1,7 @@
 from board import *
 from modulotabs import *
 from exceptions import *
-#---------------------------------Stash 4
+
 tablet = Board()
 tablet.makeMatriz()
 tablet.teamsGenerate("b", 1, 1)
@@ -11,11 +11,11 @@ def start():
     tablet.clearWindows()
     if len(tablet.position(tablet.matrice)["n"]) == 0 and len(tablet.position(tablet.matrice)["N"]) == 0:
         tablet.clearWindows()
-        input("Congratulation player *B* you have won the  game")
+        input("                     Congratulation player *B* you have won the  game")
         exit()
     if len(tablet.position(tablet.matrice)["b"]) == 0 and len(tablet.position(tablet.matrice)["B"]) == 0:
         tablet.clearWindows()
-        input("Congratulation player *N* you have won the  game")
+        input("                     Congratulation player *N* you have won the  game")
         exit()
 
     if tablet.turn == "n":
@@ -38,15 +38,20 @@ def start():
                     targets.append(tabs.targetDame(tablet.matrice, tablet.turn))
             elif len(tabs.target(tablet.matrice, tablet.turn)) > 0:
                 targets.append(tabs.target(tablet.matrice, tablet.turn))
-    # ----------------------------------------------Single eat(obligatory)-----------------------------------------------------------
+    # ----------------------------------------------Single eat(obligatory)-----------------------------1------------------------------
     if len(targets) == 1:
         input("You should eat whit the tab, " + str(targets[0]))
         if len(targets[0]) == 3:
-            tablet.matrice, tablet.turn, poin = tablet.matrice[targets[0][0][0]][targets[0][0][1]].eat(
+            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[targets[0][0][0]][targets[0][0][1]].eat(
                 targets[0][1], tablet.matrice, poin, targets[0][2])
+            if verification == False:
+                start()
+
         else:
-            tablet.matrice, tablet.turn, poin = tablet.matrice[targets[0][0][0]][targets[0][0][1]].eat(
+            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[targets[0][0][0]][targets[0][0][1]].eat(
                 targets[0][1], tablet.matrice, poin)
+            if verification == False:
+                start()
 
         if tablet.turn == "n":
             tablet.pteam2 = poin
@@ -72,11 +77,16 @@ def start():
             start()
 
         if len(targets[answer])==3:
-            tablet.matrice, tablet.turn, poin = tablet.matrice[targets[answer][0][0]][targets[answer][0][1]].eat(
+            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[targets[answer][0][0]][targets[answer][0][1]].eat(
                 targets[answer][1], tablet.matrice, poin,  targets[answer][2])
+            if verification == False:
+                start()
         else:
-            tablet.matrice, tablet.turn, poin = tablet.matrice[targets[answer][0][0]][targets[answer][0][1]].eat(
+            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[targets[answer][0][0]][targets[answer][0][1]].eat(
             targets[answer][1], tablet.matrice, poin)
+            if verification == False:
+                start()
+
         # --addated point to each team--
         if tablet.turn == "n":
             tablet.pteam2 = poin
@@ -101,19 +111,12 @@ def start():
     except InvalidMove as e:
         tablet.clearWindows()
         input(str(e))
-
     except InvalidTab as e:
         tablet.clearWindows()
         input(str(e))
-
     except InvalidRange as e:
         tablet.clearWindows()
         input(str(e))
-
-    # except IncorrectInt as e:
-    #     tablet.clearWindows()
-    #     input(str(e))
-
     except:
         tablet.clearWindows()
         input("Type a correctly tab")
