@@ -1,22 +1,31 @@
 from board import *
 from modulotabs import *
 from exceptions import *
+import sys, os
 
 tablet = Board()
 tablet.makeMatriz()
 tablet.teamsGenerate("b", 1, 1)
 tablet.teamsGenerate("n", 2, 6)
 
+def restart_program():
+    """Restarts the current program.
+    Note: this function does not return. Any cleanup action (like
+    saving data) must be done before calling this function."""
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
+
+
 def start():
     tablet.clearWindows()
     if len(tablet.position(tablet.matrice)["n"]) == 0 and len(tablet.position(tablet.matrice)["N"]) == 0:
         tablet.clearWindows()
-        input("                     Congratulation player *B* you have won the  game")
-        exit()
+        input("                     Congratulation player *B* you have won the  game     ")
+        return
     if len(tablet.position(tablet.matrice)["b"]) == 0 and len(tablet.position(tablet.matrice)["B"]) == 0:
         tablet.clearWindows()
-        input("                     Congratulation player *N* you have won the  game")
-        exit()
+        input("                     Congratulation player *N* you have won the  game    ")
+        return
 
     if tablet.turn == "n":
         poin = tablet.pteam1
@@ -127,3 +136,10 @@ def start():
 
 
 start()
+
+while True:
+    answer = input("Type 'Yes' if you wan play again, else type 'No': ")
+    if answer.lower() == "yes":
+        restart_program()
+    elif answer.lower() == "no":
+        exit()
