@@ -5,7 +5,7 @@ import sys, os
 
 tablet = Board()
 tablet.makeMatriz()
-tablet.teamsGenerate("B", 1, 1)
+tablet.teamsGenerate("b", 1, 1)
 tablet.teamsGenerate("n", 2, 6)
 
 def restart_program():
