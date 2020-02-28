@@ -305,12 +305,12 @@ class Tab:
         point += 5
 
         if  self.isDame == False :
-            targt = self.target(matrice,self.symbol)
+            targt = self.target(matrice,self.symbol.lower())
         else:
             targt = self.targetDame(matrice,self.symbol.lower())
         if len(targt)>0:
             for element in targt:
-                if len(element) ==2:
+                if len(targt) == 2:
                     if element[0] == self.pos[0] and  element[1] == self.pos[1] :
                         return  self.eat(targt[1],matrice,point)
                     else:
