@@ -32,7 +32,7 @@ class Tab:
             x*=i
             if  (self.pos[0] + y) < 8 and ( self.pos[0] + y) > 0 and  (self.pos[1] + x ) < 8 and  (self.pos[1] + x) > 0:
                 if matrice[self.pos[0]+y][self.pos[1]+x] != [] :  
-                    if matrice[self.pos[0]+by*(i+1)][self.pos[1]+bx*(i+1)] != [] or  matrice[self.pos[0]+y][self.pos[1]+x].symbol == self.symbol:
+                    if matrice[self.pos[0]+by*(i+1)][self.pos[1]+bx*(i+1)] != [] or  matrice[self.pos[0]+y][self.pos[1]+x].symbol.lower() == self.symbol.lower():
                         return False
             y=by
             x=bx
@@ -305,17 +305,18 @@ class Tab:
         point += 5
 
         if  self.isDame == False :
-            targt = self.target(matrice,self.symbol.lower())
+            targt = self.target(matrice,self.symbol)
         else:
             targt = self.targetDame(matrice,self.symbol.lower())
         if len(targt)>0:
             for element in targt:
-                if len(element) == 2:
+                if len(element) ==2:
+
                     if element[0] == self.pos[0] and  element[1] == self.pos[1] :
                         return  self.eat(targt[1],matrice,point)
-                    else:
-                        if element[0] == self.pos[0] and  element[1] == self.pos[1] :
-                            return  self.eat(targt[1],matrice,point,targt[0][2])
+                else:
+                    if element[0] == self.pos[0] and  element[1] == self.pos[1] :
+                        return  self.eat(targt[1],matrice,point,targt[0][2])
         else:
             return matrice,self.counter(self.symbol),point,True
 
@@ -338,27 +339,27 @@ class Tab:
                         if matrice[y + new][x + new].symbol.lower() == self.counter(player) :
                             if  matrice[y + new + 1][x + new + 1] == []:
                                 if self.dameValidation(matrice,1,1,new) :
-                                    targets = (self.pos,"RD",new)
+                                    return  (self.pos,"RD",new)
                 #----------------------------------------------------------------------------------------------------------------            
                 if ( y - new )> 1  and (x + new) < 8 :
                     if matrice[y - new][x + new] != []:
                         if matrice[y-new][x + new].symbol.lower()  == self.counter(player) :
                             if  matrice[y - new - 1][x + new + 1]  == []:
                                 if self.dameValidation(matrice,-1,1,new) :
-                                    targets = (self.pos,"RU",new) 
+                                    return  (self.pos,"RU",new) 
                 #----------------------------------------------------------------------------------------------------------------                
                 if (y - new) > 1 and (x - new ) > 1 :
                     if matrice[y - new][x - new] != []:
                         if matrice[y - new][x - new].symbol.lower()  == self.counter(player) :
                             if  matrice[y - new - 1][x - new - 1]  == []:
                                 if self.dameValidation(matrice,-1,-1,new) :
-                                    targets = (self.pos,"LU",new)
+                                    return  (self.pos,"LU",new)
                 #----------------------------------------------------------------------------------------------------------------                
                 if (y + new) < 8 and (x-new )> 1 :
                     if matrice[y + new][x - new] != []: 
                         if matrice[y + new][ x- new].symbol.lower()  == self.counter(player ):
                             if matrice[y + new + 1][x - new - 1]  == []:
                                 if self.dameValidation(matrice,1,-1,new) :
-                                    targets = (self.pos,"LD",new) 
+                                    return  (self.pos,"LD",new) 
         return targets
  

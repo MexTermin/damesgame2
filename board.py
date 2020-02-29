@@ -72,6 +72,7 @@ class Board:
                         allPos["N"].append(ovject)
                     elif  ovject.symbol == "B":
                         allPos["B"].append(ovject)
+        
         return allPos
     
     def makeDame(self):

@@ -5,8 +5,40 @@ import sys, os
 
 tablet = Board()
 tablet.makeMatriz()
+
+# g = Tab()
+# g.symbol="n"
+
 tablet.teamsGenerate("b", 1, 1)
 tablet.teamsGenerate("n", 2, 6)
+# f = Tab()
+# f.symbol = "N"
+# f.isDame = True
+# tablet.matrice[1][7] = f
+# tablet.matrice[1][7].pos = [1,7]
+# #------------------------------------
+# f = Tab()
+# f.symbol = "b"
+# tablet.matrice[3][5] = f
+# tablet.matrice[3][5].pos = [3,5]
+
+# f = Tab()
+# f.symbol = "b"
+# tablet.matrice[5][3] = f
+# tablet.matrice[5][3].pos = [5,3]
+
+# f = Tab()
+# f.symbol = "b"
+# tablet.matrice[7][3] = f
+# tablet.matrice[7][3].pos = [7,3]
+
+# f = Tab()
+# f.symbol = "b"
+# tablet.matrice[8][7] = f
+# tablet.matrice[8][7].pos = [8,7]
+
+
+tablet
 
 def restart_program():
     """Restarts the current program.
@@ -36,29 +68,30 @@ def start():
     # -------------------------------------------------------------------------------
     searching = ["n", "N"] if (tablet.turn == "n") else ["b", "B"]
     pos = tablet.position(tablet.matrice)
-    targets = []
+    killer = []
     # -------------------------------------------------make dame-----------------------------------------------
     tablet.makeDame()
     # ------------------------------------------------Multi-target------------------------------------------------
     for element in searching:
         for tabs in pos[element]:
+            
             if element.isupper():
                 if len(tabs.targetDame(tablet.matrice, tablet.turn)) > 0:
-                    targets.append(tabs.targetDame(tablet.matrice, tablet.turn))
+                    killer.append(tabs.targetDame(tablet.matrice, tablet.turn))
             elif len(tabs.target(tablet.matrice, tablet.turn)) > 0:
-                targets.append(tabs.target(tablet.matrice, tablet.turn))
+                killer.append(tabs.target(tablet.matrice, tablet.turn))
     # ----------------------------------------------Single eat(obligatory)-----------------------------1------------------------------
-    if len(targets) == 1:
-        input("You should eat whit the tab, " + str(targets[0]))
-        if len(targets[0]) == 3:
-            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[targets[0][0][0]][targets[0][0][1]].eat(
-                targets[0][1], tablet.matrice, poin, targets[0][2])
+    if len(killer) == 1:
+        input("You should eat whit the tab, " + str(killer[0]))
+        if len(killer[0]) == 3:
+            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[killer[0][0][0]][killer[0][0][1]].eat(
+                killer[0][1], tablet.matrice, poin, killer[0][2])
             if verification == False:
                 start()
 
         else:
-            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[targets[0][0][0]][targets[0][0][1]].eat(
-                targets[0][1], tablet.matrice, poin)
+            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[killer[0][0][0]][killer[0][0][1]].eat(
+                killer[0][1], tablet.matrice, poin)
             if verification == False:
                 start()
 
@@ -69,30 +102,30 @@ def start():
         tablet.makeDame()
         start()
     # ---------------------------------------------------------MultiEat---------------------------------------------------------------------
-    elif len(targets) > 1:
-        for i in range(len(targets)):
-            view = targets[i]
+    elif len(killer) > 1:
+        for i in range(len(killer)):
+            view = killer[i]
             view[0][1] = tablet.translate(view[0][1])
             print("*"+str(i)+"*:"+str(view)+"  ", end="")
             view[0][1] = tablet.translate(view[0][1])
 
         try:
             answer = int(input("  Select one target to eat:  "))
-            if answer < 0 or answer > len(targets):
+            if answer < 0 or answer > len(killer):
                 raise Exception
         except:
             tablet.clearWindows()
-            input("You should type a number between 0 and {}: ".format( len(targets)-1 ))
+            input("You should type a number between 0 and {}: ".format( len(killer)-1 ))
             start()
 
-        if len(targets[answer])==3:
-            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[targets[answer][0][0]][targets[answer][0][1]].eat(
-                targets[answer][1], tablet.matrice, poin,  targets[answer][2])
+        if len(killer[answer])==3:
+            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[killer[answer][0][0]][killer[answer][0][1]].eat(
+                killer[answer][1], tablet.matrice, poin,  killer[answer][2])
             if verification == False:
                 start()
         else:
-            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[targets[answer][0][0]][targets[answer][0][1]].eat(
-            targets[answer][1], tablet.matrice, poin)
+            tablet.matrice, tablet.turn, poin,verification = tablet.matrice[killer[answer][0][0]][killer[answer][0][1]].eat(
+            killer[answer][1], tablet.matrice, poin)
             if verification == False:
                 start()
 
